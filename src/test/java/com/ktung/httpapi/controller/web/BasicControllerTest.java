@@ -1,4 +1,4 @@
-package com.ktung.httpapi.controller;
+package com.ktung.httpapi.controller.web;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

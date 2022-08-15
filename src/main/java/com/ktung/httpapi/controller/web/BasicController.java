@@ -1,4 +1,4 @@
-package com.ktung.httpapi.controller;
+package com.ktung.httpapi.controller.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

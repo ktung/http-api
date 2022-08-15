@@ -1,4 +1,4 @@
-package com.ktung.httpapi.controller;
+package com.ktung.httpapi.controller.web;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,51 +8,52 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(XMLGreetingController.class)
-public class XMLGreetingControllerTest {
+@WebMvcTest(JSONGreetingController.class)
+public class JSONGreetingControllerTest {
 
   @Autowired
   private MockMvc mvc;
 
   @Test
-  public void getXMLDefault() throws Exception {
-    mvc.perform(get("/xml/greeting"))
+  public void getJSONDefault() throws Exception {
+    mvc.perform(get("/greeting"))
         .andExpect(status().is2xxSuccessful())
-        .andExpect(header().string("Content-Type", MediaType.APPLICATION_XML_VALUE))
-        .andExpect(xpath("/XMLGreeting/content").string("Hello, World!"));
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(content().json("{\"content\":\"Hello, World!\"}"));
   }
 
   @Test
-  public void getXMLParam() throws Exception {
-    mvc.perform(get("/xml/greeting")
+  public void getJSONParam() throws Exception {
+    mvc.perform(get("/greeting")
         .param("name", "Marie"))
         .andExpect(status().is2xxSuccessful())
-        .andExpect(header().string("Content-Type", MediaType.APPLICATION_XML_VALUE))
-        .andExpect(xpath("/XMLGreeting/content").string("Hello, Marie!"));
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(content().json("{\"content\":\"Hello, Marie!\"}"));
   }
 
   @Test
-  public void postXMLNoBody() throws Exception {
-    mvc.perform(post("/xml/greeting"))
+  public void postJSONNoBody() throws Exception {
+    mvc.perform(post("/greeting"))
         .andExpect(status().is4xxClientError())
         .andExpect(content().string(""));
   }
 
   @Test
-  public void postXMLReturns200() throws Exception {
-    mvc.perform(post("/xml/greeting")
-        .contentType(MediaType.APPLICATION_XML_VALUE)
-        .content("<User><name>Marie</name></User>"))
+  public void postJSONReturns200() throws Exception {
+    mvc.perform(post("/greeting")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"name\": \"Marie\"}"))
         .andExpect(status().is2xxSuccessful())
-        .andExpect(header().string("Content-Type", MediaType.APPLICATION_XML_VALUE))
-        .andExpect(xpath("/XMLGreeting/content").string("Hello, Marie!"));
+        .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$.content", is("Hello, Marie!")));
   }
 }

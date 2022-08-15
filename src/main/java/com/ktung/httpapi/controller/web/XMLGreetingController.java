@@ -1,4 +1,4 @@
-package com.ktung.httpapi.controller;
+package com.ktung.httpapi.controller.web;
 
 import com.ktung.httpapi.model.XMLGreeting;
 import com.ktung.httpapi.model.XMLUser;

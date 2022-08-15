@@ -1,4 +1,4 @@
-package com.ktung.httpapi.controller;
+package com.ktung.httpapi.controller.web;
 
 import java.util.concurrent.atomic.AtomicLong;
 
